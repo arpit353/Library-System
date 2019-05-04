@@ -1,14 +1,12 @@
 package com.example.library_system.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class StudentDto {
   Integer id;
   String name;

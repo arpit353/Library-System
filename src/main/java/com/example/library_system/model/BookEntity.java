@@ -3,9 +3,7 @@ package com.example.library_system.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "book")
 public class BookEntity {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "book_id")
   Integer bookId;
 

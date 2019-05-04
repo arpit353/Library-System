@@ -1,7 +1,6 @@
 package com.example.library_system.controller;
 
 import com.example.library_system.dto.StudentDto;
-import com.example.library_system.dto.response.BookResponseDto;
 import com.example.library_system.dto.response.StudentResponseDto;
 import com.example.library_system.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class StudentController {
   public ResponseEntity<StudentResponseDto> getStudents() {
     StudentResponseDto studentResponseDto = new StudentResponseDto();
     List<StudentDto> studentDtoList = studentService.getAllStudents();
-    if (studentDtoList.isEmpty()) {
+    if (studentDtoList==null || studentDtoList.isEmpty()) {
       studentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())

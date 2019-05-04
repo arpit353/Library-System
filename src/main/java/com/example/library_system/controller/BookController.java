@@ -33,15 +33,15 @@ public class BookController {
       bookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No Result")))
-          .bookDtos(null)
+          .messages(null)
+          .bookDtos(bookDtoList)
           .build();
     } else {
       bookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
-          .messages(null)
-          .bookDtos(bookDtoList)
+          .messages(new ArrayList<>(Arrays.asList("No Result")))
+          .bookDtos(null)
           .build();
     }
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);

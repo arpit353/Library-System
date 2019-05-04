@@ -19,5 +19,5 @@ public interface StudentDtoStudentEntityMapper {
    * @param studentDto To be converted.
    * @return Converted Form
    */
-  StudentEntity studentDtoTostudentEntity(StudentDto studentDto);
+  StudentEntity studentDtoToStudentEntity(StudentDto studentDto);
 }

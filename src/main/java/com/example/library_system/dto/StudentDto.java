@@ -10,5 +10,5 @@ import lombok.*;
 public class StudentDto {
   Integer id;
   String name;
-  Integer IssuedBookId;
+  Integer issuedBookId;
 }

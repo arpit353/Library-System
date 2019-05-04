@@ -63,7 +63,7 @@ public class StudentServiceImplementation implements StudentService {
   @Override
   public Optional<StudentDto> addStudent(StudentDto studentDto) {
     StudentEntity addedStudentEntity =
-        studentRepository.save(studentDtoStudentEntityMapper.studentDtoTostudentEntity(studentDto));
+        studentRepository.save(studentDtoStudentEntityMapper.studentDtoToStudentEntity(studentDto));
     return Optional.of(studentDtoStudentEntityMapper.studentEntityToStudentDto(addedStudentEntity));
   }
 

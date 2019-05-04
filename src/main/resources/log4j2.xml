@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration status="WARN">
+    <Properties>
+        <Property name="log-path">/opt/logs/library_system</Property>
+        <property name="pattern"> %highlight{%-5level}{FATAL=bg_red, ERROR=red} %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c %M %L - %msg%n </property>
+        <property name="deleteAge"> 90d </property>
+        <property name="RollOverStrategyMax"> 4 </property>
+        <property name="AccumulatedFileCountExceeds"> 4 </property>
+        <property name="DeleteMaxDepth"> 2 </property>
+    </Properties>
+    <Appenders>
+
+        <RollingFile name="AuditLogFileAppender" fileName="${log-path}/audit.log" filePattern="${log-path}/audit-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <pattern> ${pattern} </pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${RollOverStrategyMax}">
+                <Delete basePath="${log-path}" maxDepth="${DeleteMaxDepth}">
+                    <IfFileName glob="*/audit-*.log.gz">
+                        <IfLastModified age="${deleteAge}">
+                            <IfAccumulatedFileCount exceeds="${AccumulatedFileCountExceeds}"/>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="ErrorLogFileAppender" fileName="${log-path}/error.log" filePattern="${log-path}/error-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <pattern> ${pattern} </pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${RollOverStrategyMax}">
+                <Delete basePath="${log-path}" maxDepth="${DeleteMaxDepth}">
+                    <IfFileName glob="*/error-*.log.gz">
+                        <IfLastModified age="${deleteAge}">
+                            <IfAccumulatedFileCount exceeds="${AccumulatedFileCountExceeds}"/>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+
+        <RollingFile name="InfoLogFileAppender" fileName="${log-path}/info.log" filePattern="${log-path}/info-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <pattern> ${pattern} </pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${RollOverStrategyMax}">
+                <Delete basePath="${log-path}" maxDepth="${DeleteMaxDepth}">
+                    <IfFileName glob="*/info-*.log.gz">
+                        <IfLastModified age="${deleteAge}">
+                            <IfAccumulatedFileCount exceeds="${AccumulatedFileCountExceeds}"/>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <Console name="STDOUTLogger" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern> ${pattern} </pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger level="INFO" name="ErrorLog" additivity="false">
+            <AppenderRef ref="ErrorLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Logger>
+
+        <Logger level="INFO" name="org" additivity="false">
+            <AppenderRef ref="ErrorLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Logger>
+
+        <Logger level="INFO" name="com" additivity="false">
+            <AppenderRef ref="ErrorLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Logger>
+
+        <Logger level="INFO" name="InfoLog" additivity="false">
+            <AppenderRef ref="InfoLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Logger>
+
+        <Logger level="INFO" name="AuditLog" additivity="false">
+            <AppenderRef ref="AuditLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="InfoLogFileAppender"/>
+            <AppenderRef ref="STDOUTLogger"/>
+        </Root>
+    </Loggers>
+</configuration>

@@ -1,9 +1,6 @@
 package com.example.library_system.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
+@ToString
 @Table(name = "book")
 public class BookEntity {
 

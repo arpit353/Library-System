@@ -96,7 +96,7 @@ public class BookServiceImplementation implements BookService {
   public Optional<BookDto> addBook(BookDto bookDto) {
     BookEntity addedBookEntity =
         bookRepository.save(bookDtoBookEntityMapper.bookDtoToBookEntity(bookDto));
-    LogUtils.getInfoLogger().info("Book Added: {}",bookDto.toString());
+    LogUtils.getInfoLogger().info("Book Added: {}",addedBookEntity.toString());
     return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(addedBookEntity));
   }
 

@@ -1,5 +1,6 @@
 package com.example.library_system.service.Implementation;
 
+import com.example.library_system.cache.service.StudentCacheManager;
 import com.example.library_system.dto.StudentDto;
 import com.example.library_system.exception.StudentException;
 import com.example.library_system.mapper.StudentDtoStudentEntityMapper;
@@ -24,6 +25,9 @@ public class StudentServiceImplementation implements StudentService {
   @Autowired
   StudentDtoStudentEntityMapper studentDtoStudentEntityMapper;
 
+  @Autowired
+  StudentCacheManager studentCacheManager;
+
   /**
    * Gets all the students.
    *
@@ -31,12 +35,23 @@ public class StudentServiceImplementation implements StudentService {
    */
   @Override
   public List<StudentDto> getAllStudents() {
+//    List<StudentEntity> studentEntities = findStudentsInCache();
+//
+//    if(studentEntities!=null || !studentEntities.isEmpty()){
+//      List<StudentDto> studentDtoArrayList = studentEntities.stream()
+//          .map(studentEntity ->
+//              studentDtoStudentEntityMapper.studentEntityToStudentDto(studentEntity))
+//          .collect(Collectors.toList());
+//      return studentDtoArrayList;
+//    }
+
     try {
       List<StudentEntity> studentEntityList = studentRepository.findAll();
       if (studentEntityList.isEmpty()) {
         LogUtils.getInfoLogger().info("No Students Found");
         return null;
       } else {
+        addStudentsToCache(studentEntityList);
         List<StudentDto> studentDtoArrayList = studentEntityList.stream()
             .map(studentEntity ->
                 studentDtoStudentEntityMapper.studentEntityToStudentDto(studentEntity))
@@ -49,6 +64,14 @@ public class StudentServiceImplementation implements StudentService {
     }
   }
 
+  private void addStudentsToCache(List<StudentEntity> studentEntityList) {
+   // studentCacheManager.
+  }
+
+//  private List<StudentEntity> findStudentsInCache() {
+//
+//  }
+
   /**
    * Return students.
    *
@@ -57,12 +80,23 @@ public class StudentServiceImplementation implements StudentService {
    */
   @Override
   public Optional<StudentDto> getStudent(Integer studentId) {
+
+    Optional<StudentEntity> cachedStudentEntity = findStudentInCache(studentId);
+
+    if (cachedStudentEntity.isPresent()) {
+      return Optional.of(studentDtoStudentEntityMapper
+          .studentEntityToStudentDto(cachedStudentEntity.get()));
+    }
+
     try {
       Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
       if (studentEntity.isPresent()) {
         StudentDto studentDto =
             studentDtoStudentEntityMapper.studentEntityToStudentDto(studentEntity.get());
-        LogUtils.getInfoLogger().info("Student Found: {}", studentDto.toString());
+        LogUtils.getInfoLogger().info("Student Found in main database: {}", studentDto.toString());
+        LogUtils.getInfoLogger().info("Writing the student in the cache : {}",
+            studentEntity.toString());
+        studentCacheManager.cacheStudentDetails(studentEntity.get());
         return Optional.of(studentDto);
       } else {
         LogUtils.getInfoLogger().info("Student Not Found for Id: {}", studentId);
@@ -74,6 +108,20 @@ public class StudentServiceImplementation implements StudentService {
   }
 
   /**
+   * This looks into the cache for the student.
+   * @param studentId id of student to be looked for
+   * @return student if found else empty
+   */
+  private Optional<StudentEntity> findStudentInCache(Integer studentId) {
+    Optional<StudentEntity> cachedStudentEntity = studentCacheManager.getCachedStudentDetail(studentId);
+    if (cachedStudentEntity.isPresent()) {
+      LogUtils.getInfoLogger().info("Found the student in the cache");
+      return cachedStudentEntity;
+    } else
+      return Optional.empty();
+  }
+
+  /**
    * Updates student information.
    *
    * @param studentDto updated student data
@@ -82,6 +130,8 @@ public class StudentServiceImplementation implements StudentService {
    */
   @Override
   public Optional<StudentDto> updateStudent(StudentDto studentDto, Integer studentId) {
+
+    deleteCachedStudent(studentId);
     try {
       Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
       if (studentEntity.isPresent()) {
@@ -96,6 +146,11 @@ public class StudentServiceImplementation implements StudentService {
     } catch (Exception exception) {
       throw new StudentException(exception.getMessage());
     }
+  }
+
+  private void deleteCachedStudent(Integer studentId) {
+    Long id = studentCacheManager.removeCachedStudent(studentId);
+    LogUtils.getInfoLogger().info("Student with Id: {} removed from cache",id);
   }
 
   /**
@@ -139,4 +194,5 @@ public class StudentServiceImplementation implements StudentService {
       throw new StudentException(exception.getMessage());
     }
   }
+
 }

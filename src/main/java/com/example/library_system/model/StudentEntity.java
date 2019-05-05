@@ -3,6 +3,7 @@ package com.example.library_system.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "student")
-public class StudentEntity {
+public class StudentEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

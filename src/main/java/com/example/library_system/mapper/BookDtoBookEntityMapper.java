@@ -5,6 +5,7 @@ import com.example.library_system.model.BookEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
+// Awesome, this Mapper should be appreciated more in the company as well, don't you think
 public interface BookDtoBookEntityMapper {
 
   /**

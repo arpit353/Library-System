@@ -28,6 +28,7 @@ public interface BookRepository extends JpaRepository<BookEntity,Integer> {
    * @param bookEntity The bookEntity to be saved.
    * @return Saved BookEntity.
    */
+  // Jpa already has its own Transactional `T save(T Entity)`, use that.
   BookEntity save(BookEntity bookEntity);
 
   /**
@@ -35,5 +36,6 @@ public interface BookRepository extends JpaRepository<BookEntity,Integer> {
    * @param id BookEntity's Id.
    * @return Deleted BookEntity.
    */
+  // Annotate all DMQ with @Transactional, as it will roll back "agar code phhata.XP"
   void deleteByBookId(Integer id);
 }

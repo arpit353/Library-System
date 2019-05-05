@@ -27,6 +27,7 @@ public class BookController {
    * @return All Books
    */
   @RequestMapping(value = "/books", method = RequestMethod.GET)
+  // Use @GetMapping("/books")
   public ResponseEntity<BookResponseDto> getBooks() {
     BookResponseDto bookResponseDto;
     List<BookDto> bookDtoList = bookService.getAllBooks();
@@ -50,6 +51,7 @@ public class BookController {
    * @return book according to bookId
    */
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.GET)
+  // Use @GetMapping("/books/{bookId}")
   public ResponseEntity<BookResponseDto> getBook(@PathVariable Integer bookId) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.getBook(bookId);
@@ -74,6 +76,7 @@ public class BookController {
    * @return Updated book
    */
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.PUT)
+  // Use @PutMapping("/books/{bookId}")
   public ResponseEntity<BookResponseDto> updateBook(@RequestBody BookDto bookDtoBody,
                                                     @PathVariable Integer bookId) {
     BookResponseDto bookResponseDto;
@@ -97,6 +100,7 @@ public class BookController {
    * @return added book.
    */
   @RequestMapping(value = "books", method = RequestMethod.POST)
+  // Use @PostMapping("/books")
   public ResponseEntity<BookResponseDto> addBook(@RequestBody BookDto bookDtoBody) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.addBook(bookDtoBody);
@@ -120,6 +124,7 @@ public class BookController {
    * @return Delete BookEntity
    */
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.DELETE)
+  // Use @DeleteMapping("/books/{bookId}")
   public ResponseEntity<BookResponseDto> deleteBook(@PathVariable Integer bookId) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.deleteBook(bookId);

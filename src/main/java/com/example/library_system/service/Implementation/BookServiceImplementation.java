@@ -81,6 +81,7 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> updateBook(Integer bookId, BookDto bookDto) {
+    // Create a dto validator and validate the dto.
     try {
       Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
       if (bookEntity.isPresent()) {
@@ -104,6 +105,7 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> addBook(BookDto bookDto) {
+    // Create a dto validator and validate the dto. before operating on them
     try {
       BookEntity addedBookEntity =
           bookRepository.save(bookDtoBookEntityMapper.bookDtoToBookEntity(bookDto));

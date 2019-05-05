@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @ControllerAdvice
+// NICE
 public class CustomExceptionHandler {
 
   /**

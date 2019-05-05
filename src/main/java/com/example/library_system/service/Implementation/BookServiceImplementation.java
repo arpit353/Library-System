@@ -1,6 +1,7 @@
 package com.example.library_system.service.Implementation;
 
 import com.example.library_system.dto.BookDto;
+import com.example.library_system.exception.BookException;
 import com.example.library_system.mapper.BookDtoBookEntityMapper;
 import com.example.library_system.model.BookEntity;
 import com.example.library_system.repository.BookRepository;
@@ -31,19 +32,21 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public List<BookDto> getAllBooks() {
-    List<BookEntity> bookEntityArrayList = bookRepository.findAll();
-
-    if (bookEntityArrayList.isEmpty()) {
-
-      LogUtils.getInfoLogger().info("No Books found");
-      return null;
-    } else {
-      List<BookDto> bookDtoArrayList = bookEntityArrayList.stream()
-          .map(bookEntity ->
-              bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity))
-          .collect(Collectors.toList());
-      LogUtils.getInfoLogger().info("Books Found: {}",bookDtoArrayList.toString());
-      return bookDtoArrayList;
+    try {
+      List<BookEntity> bookEntityArrayList = bookRepository.findAll();
+      if (bookEntityArrayList.isEmpty()) {
+        LogUtils.getInfoLogger().info("No Books found");
+        return null;
+      } else {
+        List<BookDto> bookDtoArrayList = bookEntityArrayList.stream()
+            .map(bookEntity ->
+                bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity))
+            .collect(Collectors.toList());
+        LogUtils.getInfoLogger().info("Books Found: {}", bookDtoArrayList.toString());
+        return bookDtoArrayList;
+      }
+    }catch (Exception exception){
+      throw new BookException(exception.getMessage());
     }
   }
 
@@ -55,15 +58,18 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> getBook(Integer bookId) {
-    Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
-    if (bookEntity.isPresent()) {
-      LogUtils.getInfoLogger().info("Found the book: {}",bookEntity.get());
-      return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
-    } else {
-      LogUtils.getInfoLogger().info("Book not found");
-      return Optional.empty();
+    try {
+      Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
+      if (bookEntity.isPresent()) {
+        LogUtils.getInfoLogger().info("Found the book: {}", bookEntity.get());
+        return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
+      } else {
+        LogUtils.getInfoLogger().info("Book not found");
+        return Optional.empty();
+      }
+    }catch (Exception exception){
+      throw new BookException(exception.getMessage());
     }
-
   }
 
   /**
@@ -75,15 +81,19 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> updateBook(Integer bookId, BookDto bookDto) {
-    Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
-    if (bookEntity.isPresent()) {
-      BookEntity updatedBookEntity = bookRepository.save(new BookEntity(bookId,
-          bookDto.getBookName(), bookDto.getBookAuthor()));
-      LogUtils.getInfoLogger().info("Book Updated: {}",updatedBookEntity.toString());
-      return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(updatedBookEntity));
-    } else {
-      LogUtils.getInfoLogger().info("Book Not updated");
-      return Optional.empty();
+    try {
+      Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
+      if (bookEntity.isPresent()) {
+        BookEntity updatedBookEntity = bookRepository.save(new BookEntity(bookId,
+            bookDto.getBookName(), bookDto.getBookAuthor()));
+        LogUtils.getInfoLogger().info("Book Updated: {}", updatedBookEntity.toString());
+        return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(updatedBookEntity));
+      } else {
+        LogUtils.getInfoLogger().info("Book Not updated");
+        return Optional.empty();
+      }
+    }catch (Exception exception){
+      throw new BookException(exception.getMessage());
     }
   }
 
@@ -94,10 +104,14 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> addBook(BookDto bookDto) {
-    BookEntity addedBookEntity =
-        bookRepository.save(bookDtoBookEntityMapper.bookDtoToBookEntity(bookDto));
-    LogUtils.getInfoLogger().info("Book Added: {}",addedBookEntity.toString());
-    return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(addedBookEntity));
+    try {
+      BookEntity addedBookEntity =
+          bookRepository.save(bookDtoBookEntityMapper.bookDtoToBookEntity(bookDto));
+      LogUtils.getInfoLogger().info("Book Added: {}", addedBookEntity.toString());
+      return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(addedBookEntity));
+    }catch (Exception exception){
+      throw new BookException(exception.getMessage());
+    }
   }
 
   /**
@@ -118,10 +132,8 @@ public class BookServiceImplementation implements BookService {
         LogUtils.getInfoLogger().info("Book not Deleted");
         return Optional.empty();
       }
-    }
-    catch (Exception e){
-      LogUtils.getErrorLogger().info(e.getMessage());
-      return Optional.empty();
+    }catch (Exception exception){
+      throw new BookException(exception.getMessage());
     }
   }
 }

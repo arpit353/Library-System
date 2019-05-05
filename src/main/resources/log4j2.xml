@@ -79,16 +79,6 @@
             <AppenderRef ref="STDOUTLogger"/>
         </Logger>
 
-        <Logger level="INFO" name="org" additivity="false">
-            <AppenderRef ref="ErrorLogFileAppender"/>
-            <AppenderRef ref="STDOUTLogger"/>
-        </Logger>
-
-        <Logger level="INFO" name="com" additivity="false">
-            <AppenderRef ref="ErrorLogFileAppender"/>
-            <AppenderRef ref="STDOUTLogger"/>
-        </Logger>
-
         <Logger level="INFO" name="InfoLog" additivity="false">
             <AppenderRef ref="InfoLogFileAppender"/>
             <AppenderRef ref="STDOUTLogger"/>

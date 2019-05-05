@@ -34,12 +34,15 @@ public class BookServiceImplementation implements BookService {
     List<BookEntity> bookEntityArrayList = bookRepository.findAll();
 
     if (bookEntityArrayList.isEmpty()) {
+
+      LogUtils.getInfoLogger().info("No Books found");
       return null;
     } else {
       List<BookDto> bookDtoArrayList = bookEntityArrayList.stream()
           .map(bookEntity ->
               bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity))
           .collect(Collectors.toList());
+      LogUtils.getInfoLogger().info("Books Found: {}",bookDtoArrayList.toString());
       return bookDtoArrayList;
     }
   }
@@ -76,8 +79,10 @@ public class BookServiceImplementation implements BookService {
     if (bookEntity.isPresent()) {
       BookEntity updatedBookEntity = bookRepository.save(new BookEntity(bookId,
           bookDto.getBookName(), bookDto.getBookAuthor()));
+      LogUtils.getInfoLogger().info("Book Updated: {}",updatedBookEntity.toString());
       return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(updatedBookEntity));
     } else {
+      LogUtils.getInfoLogger().info("Book Not updated");
       return Optional.empty();
     }
   }
@@ -91,6 +96,7 @@ public class BookServiceImplementation implements BookService {
   public Optional<BookDto> addBook(BookDto bookDto) {
     BookEntity addedBookEntity =
         bookRepository.save(bookDtoBookEntityMapper.bookDtoToBookEntity(bookDto));
+    LogUtils.getInfoLogger().info("Book Added: {}",bookDto.toString());
     return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(addedBookEntity));
   }
 
@@ -106,8 +112,10 @@ public class BookServiceImplementation implements BookService {
       Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
       if (bookEntity.isPresent()) {
         bookRepository.deleteByBookId(bookId);
+        LogUtils.getInfoLogger().info("Book Deleted: {}",bookEntity.get().toString());
         return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
       } else {
+        LogUtils.getInfoLogger().info("Book not Deleted");
         return Optional.empty();
       }
     }

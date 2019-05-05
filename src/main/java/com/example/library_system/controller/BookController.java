@@ -29,19 +29,19 @@ public class BookController {
   public ResponseEntity<BookResponseDto> getBooks() {
     BookResponseDto bookResponseDto;
     List<BookDto> bookDtoList = bookService.getAllBooks();
-    if (bookDtoList != null || !bookDtoList.isEmpty()) {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(null)
-          .bookDtos(bookDtoList)
-          .build();
-    } else {
+     if (bookDtoList == null || bookDtoList.isEmpty()) {
       bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No Result")))
           .bookDtos(null)
+          .build();
+    } else {
+      bookResponseDto = BookResponseDto.builder()
+          .code(HttpStatus.OK.value())
+          .status(HttpStatus.OK.toString())
+          .messages(new ArrayList<>(Arrays.asList("Books found")))
+          .bookDtos(bookDtoList)
           .build();
     }
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
@@ -112,7 +112,7 @@ public class BookController {
    *
    * @return added book.
    */
-  @RequestMapping(value = "books/", method = RequestMethod.POST)
+  @RequestMapping(value = "books", method = RequestMethod.POST)
   public ResponseEntity<BookResponseDto> addBook(@RequestBody BookDto bookDtoBody) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.addBook(bookDtoBody);

@@ -109,7 +109,7 @@ public class StudentController {
    *
    * @return added student.
    */
-  @RequestMapping(value = "students/", method = RequestMethod.POST)
+  @RequestMapping(value = "students", method = RequestMethod.POST)
   public ResponseEntity<StudentResponseDto> addStudent(@RequestBody StudentDto studentDtoBody) {
     StudentResponseDto studentResponseDto;
     Optional<StudentDto> studentDto = studentService.addStudent(studentDtoBody);
@@ -160,3 +160,8 @@ public class StudentController {
   }
 
 }
+
+//TODO: Test Student Controller.
+//TODO: DO Exception Handing.
+//TODO: Add Logger
+

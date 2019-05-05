@@ -9,10 +9,12 @@ import com.example.library_system.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class BookServiceImplementation implements BookService {
 
@@ -100,11 +102,17 @@ public class BookServiceImplementation implements BookService {
    */
   @Override
   public Optional<BookDto> deleteBook(Integer bookId) {
-    Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
-    if (bookEntity.isPresent()) {
-      bookRepository.deleteByBookId(bookId);
-      return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
-    } else {
+    try {
+      Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
+      if (bookEntity.isPresent()) {
+        bookRepository.deleteByBookId(bookId);
+        return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
+      } else {
+        return Optional.empty();
+      }
+    }
+    catch (Exception e){
+      LogUtils.getErrorLogger().info(e.getMessage());
       return Optional.empty();
     }
   }

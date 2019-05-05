@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Now implement your API in controller.
  * Why? Yes, Points coming up again. X).
  * 1. Seeee, there's no Request Annotations here(Cover that @RestController up there with your palm and then see), only pure code.
- * 2. DTO validations can come here so that you don't have write null checks and worry about data in your services.
+ * 2. DTO validations can come here so that you don't have to write null checks and worry about data in your services.
  * 3. you can write Services which doesn't care about data, it will just do what it is supposed todo, which is not validations BTW.
  * 4. And Aesthetically Pleasing, for sure. XD.
  */

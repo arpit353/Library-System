@@ -2,6 +2,7 @@ package com.example.library_system.controller;
 
 import com.example.library_system.dto.BookDto;
 import com.example.library_system.dto.response.BookResponseDto;
+import com.example.library_system.exception.BookException;
 import com.example.library_system.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,13 +30,8 @@ public class BookController {
   public ResponseEntity<BookResponseDto> getBooks() {
     BookResponseDto bookResponseDto;
     List<BookDto> bookDtoList = bookService.getAllBooks();
-     if (bookDtoList == null || bookDtoList.isEmpty()) {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No Result")))
-          .bookDtos(null)
-          .build();
+    if (bookDtoList == null || bookDtoList.isEmpty()) {
+      throw new BookException("No Result");
     } else {
       bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
@@ -65,12 +61,7 @@ public class BookController {
           .bookDtos(new ArrayList<BookDto>(Arrays.asList(bookDto.get())))
           .build();
     } else {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No book with this Id exists")))
-          .bookDtos(null)
-          .build();
+      throw new BookException("No book with this Id exists");
     }
 
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
@@ -87,22 +78,15 @@ public class BookController {
                                                     @PathVariable Integer bookId) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.updateBook(bookId, bookDtoBody);
-    if(bookDto.isPresent())
-    {
+    if (bookDto.isPresent()) {
       bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Information Updated.")))
           .bookDtos(new ArrayList<BookDto>(Arrays.asList(bookDto.get())))
           .build();
-    }
-    else {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No book with this Id exists")))
-          .bookDtos(null)
-          .build();
+    } else {
+      throw new BookException("No book with this Id exists");
     }
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
   }
@@ -116,22 +100,15 @@ public class BookController {
   public ResponseEntity<BookResponseDto> addBook(@RequestBody BookDto bookDtoBody) {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.addBook(bookDtoBody);
-    if(bookDto.isPresent())
-    {
+    if (bookDto.isPresent()) {
       bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Added.")))
           .bookDtos(new ArrayList<BookDto>(Arrays.asList(bookDto.get())))
           .build();
-    }
-    else {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("Book couldn't be added")))
-          .bookDtos(null)
-          .build();
+    } else {
+      throw new BookException("Book couldn't be added");
     }
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
   }
@@ -147,22 +124,15 @@ public class BookController {
     BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.deleteBook(bookId);
 
-    if(bookDto.isPresent())
-    {
+    if (bookDto.isPresent()) {
       bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Deleted.")))
           .bookDtos(new ArrayList<BookDto>(Arrays.asList(bookDto.get())))
           .build();
-    }
-    else {
-      bookResponseDto = BookResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("Book couldn't be deleted")))
-          .bookDtos(null)
-          .build();
+    } else {
+      throw new BookException("Book couldn't be deleted");
     }
     return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
   }

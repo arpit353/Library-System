@@ -2,6 +2,7 @@ package com.example.library_system.controller;
 
 import com.example.library_system.dto.StudentDto;
 import com.example.library_system.dto.response.StudentResponseDto;
+import com.example.library_system.exception.StudentException;
 import com.example.library_system.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,7 @@ public class StudentController {
     StudentResponseDto studentResponseDto;
     List<StudentDto> studentDtoList = studentService.getAllStudents();
     if (studentDtoList==null || studentDtoList.isEmpty()) {
-      studentResponseDto = StudentResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No Students Information Present")))
-          .studentDtos(null)
-          .build();
+      throw new StudentException("No Students Information Present");
     } else {
       studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
@@ -65,12 +61,7 @@ public class StudentController {
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto = StudentResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("No student with this Id exists")))
-          .studentDtos(null)
-          .build();
+      throw new StudentException("No student with this Id exists");
     }
     return new ResponseEntity<>(studentResponseDto, HttpStatus.OK);
   }
@@ -94,12 +85,7 @@ public class StudentController {
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto = StudentResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("Student's Information not Updated")))
-          .studentDtos(null)
-          .build();
+      throw new StudentException("Student's Information not Updated");
     }
     return new ResponseEntity<>(studentResponseDto, HttpStatus.OK);
   }
@@ -121,12 +107,7 @@ public class StudentController {
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto = StudentResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("Student's Information not added")))
-          .studentDtos(null)
-          .build();
+      throw new StudentException("Student's Information not added");
     }
     return new ResponseEntity<>(studentResponseDto, HttpStatus.OK);
   }
@@ -149,19 +130,13 @@ public class StudentController {
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto = StudentResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.toString())
-          .messages(new ArrayList<>(Arrays.asList("Student's Information not deleted")))
-          .studentDtos(null)
-          .build();
+      throw new StudentException("Student's Information not deleted");
     }
     return new ResponseEntity<>(studentResponseDto, HttpStatus.OK);
   }
 
 }
 
-//TODO: Test Student Controller.
 //TODO: DO Exception Handing.
 //TODO: Add Logger
 

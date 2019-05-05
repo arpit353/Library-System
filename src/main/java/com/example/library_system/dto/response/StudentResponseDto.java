@@ -1,15 +1,15 @@
 package com.example.library_system.dto.response;
 
 import com.example.library_system.dto.StudentDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class StudentResponseDto {
   String status;
   Integer code;

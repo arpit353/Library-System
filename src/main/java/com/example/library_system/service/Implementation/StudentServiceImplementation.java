@@ -5,7 +5,6 @@ import com.example.library_system.mapper.StudentDtoStudentEntityMapper;
 import com.example.library_system.model.StudentEntity;
 import com.example.library_system.repository.StudentRepository;
 import com.example.library_system.service.StudentService;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,8 @@ public class StudentServiceImplementation implements StudentService {
   @Autowired
   StudentRepository studentRepository;
 
-  StudentDtoStudentEntityMapper studentDtoStudentEntityMapper =
-      Mappers.getMapper(StudentDtoStudentEntityMapper.class);
+  @Autowired
+  StudentDtoStudentEntityMapper studentDtoStudentEntityMapper;
 
 
   @Override

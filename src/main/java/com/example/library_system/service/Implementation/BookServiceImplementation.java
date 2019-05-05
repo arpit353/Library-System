@@ -5,7 +5,7 @@ import com.example.library_system.mapper.BookDtoBookEntityMapper;
 import com.example.library_system.model.BookEntity;
 import com.example.library_system.repository.BookRepository;
 import com.example.library_system.service.BookService;
-import org.mapstruct.factory.Mappers;
+import com.example.library_system.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +19,8 @@ public class BookServiceImplementation implements BookService {
   @Autowired
   BookRepository bookRepository;
 
-  BookDtoBookEntityMapper bookDtoBookEntityMapper =
-      Mappers.getMapper(BookDtoBookEntityMapper.class);
+  @Autowired
+  BookDtoBookEntityMapper bookDtoBookEntityMapper;
 
   /**
    * Gets all the books.
@@ -52,8 +52,10 @@ public class BookServiceImplementation implements BookService {
   public Optional<BookDto> getBook(Integer bookId) {
     Optional<BookEntity> bookEntity = bookRepository.findByBookId(bookId);
     if (bookEntity.isPresent()) {
+      LogUtils.getInfoLogger().info("Found the book: {}",bookEntity.get());
       return Optional.of(bookDtoBookEntityMapper.bookEntityToBookDto(bookEntity.get()));
     } else {
+      LogUtils.getInfoLogger().info("Book not found");
       return Optional.empty();
     }
 

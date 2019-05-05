@@ -27,17 +27,17 @@ public class BookController {
    */
   @RequestMapping(value = "/books", method = RequestMethod.GET)
   public ResponseEntity<BookResponseDto> getBooks() {
-    BookResponseDto bookResponseDto = new BookResponseDto();
+    BookResponseDto bookResponseDto;
     List<BookDto> bookDtoList = bookService.getAllBooks();
     if (bookDtoList != null || !bookDtoList.isEmpty()) {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(null)
           .bookDtos(bookDtoList)
           .build();
     } else {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No Result")))
@@ -55,17 +55,17 @@ public class BookController {
    */
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.GET)
   public ResponseEntity<BookResponseDto> getBook(@PathVariable Integer bookId) {
-    BookResponseDto bookResponseDto = new BookResponseDto();
+    BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.getBook(bookId);
     if (bookDto.isPresent()) {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Found the book.")))
           .bookDtos(new ArrayList<BookDto>(Arrays.asList(bookDto.get())))
           .build();
     } else {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No book with this Id exists")))
@@ -85,11 +85,11 @@ public class BookController {
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.PUT)
   public ResponseEntity<BookResponseDto> updateBook(@RequestBody BookDto bookDtoBody,
                                                     @PathVariable Integer bookId) {
-    BookResponseDto bookResponseDto = new BookResponseDto();
+    BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.updateBook(bookId, bookDtoBody);
     if(bookDto.isPresent())
     {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Information Updated.")))
@@ -97,7 +97,7 @@ public class BookController {
           .build();
     }
     else {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No book with this Id exists")))
@@ -114,11 +114,11 @@ public class BookController {
    */
   @RequestMapping(value = "books/", method = RequestMethod.POST)
   public ResponseEntity<BookResponseDto> addBook(@RequestBody BookDto bookDtoBody) {
-    BookResponseDto bookResponseDto = new BookResponseDto();
+    BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.addBook(bookDtoBody);
     if(bookDto.isPresent())
     {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Added.")))
@@ -126,7 +126,7 @@ public class BookController {
           .build();
     }
     else {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book couldn't be added")))
@@ -144,12 +144,12 @@ public class BookController {
    */
   @RequestMapping(value = "books/{bookId}", method = RequestMethod.DELETE)
   public ResponseEntity<BookResponseDto> deleteBook(@PathVariable Integer bookId) {
-    BookResponseDto bookResponseDto = new BookResponseDto();
+    BookResponseDto bookResponseDto;
     Optional<BookDto> bookDto = bookService.deleteBook(bookId);
 
     if(bookDto.isPresent())
     {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book Deleted.")))
@@ -157,7 +157,7 @@ public class BookController {
           .build();
     }
     else {
-      bookResponseDto.builder()
+      bookResponseDto = BookResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Book couldn't be deleted")))

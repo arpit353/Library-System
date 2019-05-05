@@ -27,17 +27,17 @@ public class StudentController {
    */
   @RequestMapping(value = "/students", method = RequestMethod.GET)
   public ResponseEntity<StudentResponseDto> getStudents() {
-    StudentResponseDto studentResponseDto = new StudentResponseDto();
+    StudentResponseDto studentResponseDto;
     List<StudentDto> studentDtoList = studentService.getAllStudents();
     if (studentDtoList==null || studentDtoList.isEmpty()) {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No Students Information Present")))
           .studentDtos(null)
           .build();
     } else {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student Informations Found")))
@@ -55,17 +55,17 @@ public class StudentController {
    */
   @RequestMapping(value = "students/{studentId}", method = RequestMethod.GET)
   public ResponseEntity<StudentResponseDto> getStudent(@PathVariable Integer studentId) {
-    StudentResponseDto studentResponseDto = new StudentResponseDto();
+    StudentResponseDto studentResponseDto;
     Optional<StudentDto> studentDto = studentService.getStudent(studentId);
     if (studentDto.isPresent()) {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information Found")))
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("No student with this Id exists")))
@@ -84,17 +84,17 @@ public class StudentController {
   @RequestMapping(value = "students/{studentId}", method = RequestMethod.PUT)
   public ResponseEntity<StudentResponseDto> updateStudent(@RequestBody StudentDto studentDtoBody,
                                                           @PathVariable Integer studentId) {
-    StudentResponseDto studentResponseDto = new StudentResponseDto();
+    StudentResponseDto studentResponseDto;
     Optional<StudentDto> studentDto = studentService.updateStudent(studentDtoBody,studentId);
     if (studentDto.isPresent()) {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information Updated")))
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information not Updated")))
@@ -111,17 +111,17 @@ public class StudentController {
    */
   @RequestMapping(value = "students/", method = RequestMethod.POST)
   public ResponseEntity<StudentResponseDto> addStudent(@RequestBody StudentDto studentDtoBody) {
-    StudentResponseDto studentResponseDto = new StudentResponseDto();
+    StudentResponseDto studentResponseDto;
     Optional<StudentDto> studentDto = studentService.addStudent(studentDtoBody);
     if (studentDto.isPresent()) {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information added")))
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information not added")))
@@ -139,17 +139,17 @@ public class StudentController {
    */
   @RequestMapping(value = "students/{studentId}", method = RequestMethod.DELETE)
   public ResponseEntity<StudentResponseDto> deleteStudent(@PathVariable Integer studentId) {
-    StudentResponseDto studentResponseDto = new StudentResponseDto();
+    StudentResponseDto studentResponseDto;
     Optional<StudentDto> studentDto = studentService.deleteStudent(studentId);
     if (studentDto.isPresent()) {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information Deleted")))
           .studentDtos(new ArrayList<>(Arrays.asList(studentDto.get())))
           .build();
     } else {
-      studentResponseDto.builder()
+      studentResponseDto = StudentResponseDto.builder()
           .code(HttpStatus.OK.value())
           .status(HttpStatus.OK.toString())
           .messages(new ArrayList<>(Arrays.asList("Student's Information not deleted")))
